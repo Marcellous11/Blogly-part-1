@@ -1,0 +1,23 @@
+#profile_pic {
+	width: 300px;
+	height: 250px;
+	float: left;
+}
+#user-invalid {
+	display: flex;
+	flex-direction: column;
+}
+
+#btn {
+	display: flex;
+	flex-direction: column;
+}
+
+/* #create_user_form {
+	flex-direction: column;
+	background-color: red;
+}
+form {
+	flex-direction: column;
+	background-color: red;
+} */

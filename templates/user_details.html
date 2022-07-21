@@ -1,0 +1,18 @@
+{% extends 'all_users.html'%}
+
+{%block content%}
+
+<body>
+    <img id="profile_pic" src="{{user.image_url}}" alt="">
+    <h1 id="user_name">{{user.first_name}} {{user.last_name}}</h1>
+    <form action="">
+        <button formmethod="GET" formaction="/">Go Back</button>
+        <button formmethod="GET" formaction="/{{user.id}}/edit">Edit</button>
+        <button formmethod="POST" formaction="/{{user.id}}/delete">Delete</button>
+    </form>
+
+
+</body>
+{%endblock%}
+
+</html>
