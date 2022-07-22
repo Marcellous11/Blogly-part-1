@@ -5,17 +5,23 @@
     <h1>Edit User</h1>
 
     <form method="POST">
+        <div class="form-group"></div>
         <label for="first_name"> First Name</label><br>
-        <input type="text" name="first_name" value="{{user.first_name}}"><br>
+        <input class=".form-control" type="text" name="first_name" value="{{user.first_name}}"><br>
+        </div>
+        <div class="form-group"></div>
         <label for="last_name"> Last Name</label><br>
-        <input type="text" name="last_name" value="{{user.last_name}}"><br>
+        <input class=".form-control" type="text" name="last_name" value="{{user.last_name}}"><br>
+        </div>
+        <div class="form-group"></div>
         <label for="image_url"> Image URL</label><br>
-        <input type="text" name="image_url" value="{{user.image_url}}"><br>
-        <button>Make Changes</button>
-
+        <input class=".form-control" type="text" name="image_url" value="{{user.image_url}}"><br>
+        </div>
+        <button class="btn btn-default">Make Changes</button>
     </form>
+
     <form action="">
-        <button formmethod="GET" formaction="/{{user.id}}">Back to user</button>
+        <button class="btn btn-default" formmethod="GET" formaction="/{{user.id}}">Back to user</button>
     </form>
 </body>
 {%endblock%}
