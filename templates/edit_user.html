@@ -1,5 +1,5 @@
 {% extends 'all_users.html'%}
-{% block content%}
+{% block content %}
 
 <body>
     <div class="container">
@@ -22,7 +22,7 @@
         </form>
 
         <form action="">
-            <button class="btn btn-default" formmethod="GET" formaction="/{{user.id}}">Back to user</button>
+            <button class="btn btn-default" formmethod="GET" formaction="/user/{{user.id}}">Back to user</button>
         </form>
     </div>
 </body>

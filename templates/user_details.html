@@ -6,9 +6,17 @@
     <img id="profile_pic" src="{{user.image_url}}" alt="">
     <h1 id="user_name">{{user.first_name}} {{user.last_name}}</h1>
     <form action="">
-        <button class="btn btn-default" formmethod="GET" formaction="/">Go Back</button>
-        <button class="btn btn-default" formmethod="GET" formaction="/{{user.id}}/edit">Edit</button>
-        <button class="btn btn-default" formmethod="POST" formaction="/{{user.id}}/delete">Delete</button>
+        <button class="btn btn-default" formmethod="GET" formaction="/user">Go Back</button>
+        <button class="btn btn-default" formmethod="GET" formaction="/user/{{user.id}}/edit">Edit</button>
+        <button class="btn btn-default" formmethod="POST" formaction="/user/{{user.id}}/delete">Delete</button>
+    </form>
+
+    <form>
+        <h2>Posts</h2>
+        <ul>
+            <li></li>
+        </ul>
+        <button class="btn btn-default" formmethod="GET" formaction="/user/{{user.id}}/add_post">Add Post</button>
     </form>
 
 
