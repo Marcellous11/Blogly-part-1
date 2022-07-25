@@ -1,26 +1,38 @@
 {% extends 'all_users.html'%}
 
-{%block content%}
-
 <body>
-    <img id="profile_pic" src="{{user.image_url}}" alt="">
-    <h1 id="user_name">{{user.first_name}} {{user.last_name}}</h1>
-    <form action="">
-        <button class="btn btn-default" formmethod="GET" formaction="/user">Go Back</button>
-        <button class="btn btn-default" formmethod="GET" formaction="/user/{{user.id}}/edit">Edit</button>
-        <button class="btn btn-default" formmethod="POST" formaction="/user/{{user.id}}/delete">Delete</button>
-    </form>
+    {%block content%}
+    <div class="main row">
+        <div id="profile" class="col-sm-4 text-center ">
+            <img class="rounded" id="profile_pic" src="{{user.image_url}}" alt="">
+        </div>
 
-    <form>
-        <h2>Posts</h2>
-        <ul>
-            <li></li>
-        </ul>
-        <button class="btn btn-default" formmethod="GET" formaction="/user/{{user.id}}/add_post">Add Post</button>
-    </form>
-
-
+        <div id="personl_info" class="col-sm-8">
+            <h1 id="user_name">{{user.first_name}} {{user.last_name}}</h1>
+            <form action="">
+                <button class="btn btn-outline-info" formmethod="GET" formaction="/user">Go Back</button>
+                <button class="btn btn-default btn-info btn-sm" formmethod="GET"
+                    formaction="/user/{{user.id}}/edit">Edit</button>
+                <button class="btn btn-default btn-danger btn-sm" formmethod="POST"
+                    formaction="/user/{{user.id}}/delete">Delete</button>
+            </form>
+            <div class="container">
+                <form>
+                    <h2>Posts</h2>
+                    <ul class="list-group">
+                        {%for post in posts%}
+                        {%if post.users_id == user.id%}
+                        <li><a href="/user/{{user.id}}/post_details/{{post.id}}"
+                                class="list-group-item">{{post.title}}</a>
+                        </li>
+                        {%endif%}
+                        {%endfor%}
+                    </ul>
+                    <button class="btn btn-success" formmethod="GET" formaction="/user/{{user.id}}/add_post">Add
+                        Post</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {%endblock%}
 </body>
-{%endblock%}
-
-</html>

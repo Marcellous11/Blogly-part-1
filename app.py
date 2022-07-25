@@ -60,7 +60,8 @@ def add_user():
 def show_user(user_id):
     """Show information about user """
     user = User.query.get_or_404(user_id)
-    return render_template("user_details.html", user=user)
+    posts = Post.query.filter(User.id==2)
+    return render_template("user_details.html", posts=posts, user=user)
 
 
 @app.route("/user/<int:user_id>/edit")
@@ -108,17 +109,47 @@ def add_post(user_id):
     title = request.form['title']
     content = request.form['content']
     user = User.query.get_or_404(user_id)
-    post = Post(title=title,content=content)
+    post = Post(title=title,content=content,users_id=user_id)
     db.session.add(post)
     db.session.commit()
-    return redirect(f'/user/{user_id}/post_details' )
+    return redirect(f'/user/{user_id}/post_details/{post.id}' )
 
 
-@app.route('/user/<int:user_id>/post_details')
-def post_detaisl(user_id):
+@app.route('/user/<int:user_id>/post_details/<int:post_id>')
+def post_detaisl(user_id,post_id):
     """Information about user post"""
     user = User.query.get_or_404(user_id)
-    return render_template('post_details.html',user=user)
+    post = Post.query.get_or_404(post_id)
+    return render_template('post_details.html',user=user,post=post)
 
+
+@app.route('/user/<int:user_id>/post_details/<int:post_id>/edit')
+def edit_post(user_id, post_id):
+
+    user = User.query.get_or_404(user_id)
+    post = Post.query.get_or_404(post_id)
+    return render_template('edit_post.html',user=user,post=post)
 
     
+@app.route("/user/<int:user_id>/post_details/<int:post_id>/edit", methods = ["POST"])
+def edit_post_submit(user_id,post_id):
+    """Path where user edits are submitted """
+    title = request.form['title']
+    content = request.form['content']
+    
+    user = User.query.get_or_404(user_id)
+    post = Post.query.get_or_404(post_id)
+
+    post.title = title
+    post.content = content
+
+    db.session.commit()
+    return redirect(f'/user/{user_id}/post_details/{post_id}')
+
+
+@app.route('/user/<int:user_id>/post_details/<int:post_id>/delete', methods = ['POST'])
+def delete_post(user_id,post_id):
+    """Delete a user profile"""
+    Post.query.filter_by(id=post_id).delete()
+    db.session.commit()
+    return redirect(f'/user/{user_id}')

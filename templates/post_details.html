@@ -1,7 +1,21 @@
 {% extends 'all_users.html'%}
-{%block content %}
-<h1>whats up </h1>
-<form action="">
-    <button formaction="/user/{{user.id}}">Return to User</button>
-</form>
-{%endblock%}
+
+<body>
+    {%block content %}
+    <div class="container">
+        <h2>{{post.title}}</h2>
+
+        <p>{{post.content}}</p>
+
+        <h7> <i>By - </i> {{user.first_name}} {{user.last_name}}</h7>
+
+        <form action="">
+            <button class="btn btn btn-outline-primary" formaction="/user/{{user.id}}">Return</button>
+            <button class="btn btn-default btn-info btn-sm"
+                formaction="/user/{{user.id}}/post_details/{{post.id}}/edit">Edit</button>
+            <button formmethod="POST" class="btn btn-default btn-danger btn-sm"
+                formaction="/user/{{user.id}}/post_details/{{post.id}}/delete">Delete</button>
+        </form>
+    </div>
+    {%endblock%}
+</body>

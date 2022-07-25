@@ -14,22 +14,24 @@
     <title>Document</title>
 </head>
 
-{% block content%}
-
 <body>
+    {% block content%}
+
+
     <div class="container">
         <h1>Users</h1>
-        <ul>
+        <ul class="list-group">
             {% for user in users%}
-            <li><a href="/user/{{user.id}}">{{user.last_name}}, {{user.first_name}} </a> </li>
+            <li><a href="/user/{{user.id}}" class="list-group-item">{{user.last_name}}, {{user.first_name}} </a> </li>
             {%endfor%}
         </ul>
 
         <form action="">
-            <button class="btn btn-default" formmethod="GET" formaction="/user/add">Create User</button>
+            <button class="btn btn-success" formmethod="GET" formaction="/user/add">Create User</button>
         </form>
     </div>
+
+    {%endblock%}
 </body>
-{%endblock%}
 
 </html>

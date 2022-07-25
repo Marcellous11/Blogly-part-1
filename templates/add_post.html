@@ -1,19 +1,23 @@
 {% extends 'all_users.html'%}
 
-{%block content%}
+<body>
 
-<div class="container">
-    <h1>Create Post</h1>
 
-    <form action="" method="POST">
-        <label for="title"> Title :
-            <input type="text" name="title" id="">
-        </label><br>
-        <label for="content"> Content:
-            <input type="text" name="content" id="">
-        </label><br>
-        <button class="btn btn-default" formmethod="GET" formaction="/user/{{user.id}}">Back to user</button>
-        <button class="btn btn-default">Add Post</button>
-    </form>
-</div>
-{%endblock%}
+    {%block content%}
+
+    <div class="container form-group">
+        <h1>Create Post</h1>
+
+        <form action="" method="POST">
+            <label for="title"> Title :
+                <input type="text" name="title" id="">
+            </label><br>
+            <label for="content"> Content:
+                <textarea type="text" name="content" class="form-control" rows="5"></textarea>
+            </label><br>
+            <button class="btn btn-outline-info" formmethod="GET" formaction="/user/{{user.id}}">Cancel</button>
+            <button class="btn btn-success">Add Post</button>
+        </form>
+    </div>
+    {%endblock%}
+</body>

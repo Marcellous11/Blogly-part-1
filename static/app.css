@@ -13,11 +13,10 @@
 	flex-direction: column;
 }
 
-/* #create_user_form {
-	flex-direction: column;
-	background-color: red;
+.delete_btn {
+	color: rgb(252, 73, 73);
 }
-form {
-	flex-direction: column;
-	background-color: red;
-} */
+
+ul {
+	list-style-type: none;
+}
