@@ -16,6 +16,15 @@
                 <label for="content"> Content</label><br>
                 <input class=".form-control" type="text" name="content" value="{{post.content}}"><br>
             </div>
+            {%for tag in all_tags%}
+            {% if tag in checked_tags %}
+            <input type="checkbox" name="tag" id="" value="{{tag.id}}" checked>
+            {%else %}
+            <input type="checkbox" name="tag" id="" value="{{tag.id}}">
+            {%endif%}
+            <label for="tag">{{tag.name}}</label><br>
+
+            {%endfor%}
 
             <button class="btn btn-sm btn-success">Make Changes</button>
         </form>

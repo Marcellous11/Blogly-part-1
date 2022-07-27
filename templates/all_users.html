@@ -29,6 +29,16 @@
         <form action="">
             <button class="btn btn-success" formmethod="GET" formaction="/user/add">Create User</button>
         </form>
+
+        <form action="">
+            <h2>Tags</h2>
+            <ul>
+                {%for tag in tags%}
+                <li><a href="/user/tag/{{tag.id}}" class="list-group-item">{{tag.name}}</a></li>
+                {%endfor%}
+            </ul>
+            <button formaction="/user/add_tags" class="btn btn-success">Create Tag</button>
+        </form>
     </div>
 
     {%endblock%}

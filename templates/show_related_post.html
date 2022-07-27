@@ -1,0 +1,19 @@
+{% extends 'all_users.html'%}
+
+{%block content%}
+<h1> Tag Name: {{tag.name}}</h1>
+
+<h2>List of related post</h2>
+<ul class="list-group">
+    {% for post in posts_list%}
+    <li><a href="/user/{{post.user.id}}/post_details/{{post.id}}" class="list-group-item">{{post.title}}</a></li>
+    {%endfor%}
+</ul>
+<form action="/user/tag/{{tag.id}}/edit">
+    <button class="btn btn-outline-primary" formaction="/user">Back</button>
+    <button class="btn btn-danger btn-small" formmethod="POST" formaction="/user/tag/{{tag.id}}/delete">Delete
+        Tag</button>
+    <button class="btn btn-info btn-small">Edit Tag</button>
+
+</form>
+{%endblock%}

@@ -1,6 +1,6 @@
 """Seed file to make sample data for pets db."""
 
-from models import User, db, Post
+from models import User, db, Post, Tag, PostTag
 from app import app
 
 # Create all tables
@@ -50,4 +50,12 @@ db.session.commit()
 
 post = Post(title="rREALLY",content="DOES IT WORK", users_id=6)
 db.session.add(post)
+db.session.commit()
+
+winning = Tag(name="winning")
+loser = Tag(name="loser")
+
+db.session.add(winning)
+db.session.add(loser)
+
 db.session.commit()

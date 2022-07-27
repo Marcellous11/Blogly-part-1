@@ -9,8 +9,16 @@
 
         <h7> <i>By - </i> {{user.first_name}} {{user.last_name}}</h7>
 
+
+        <div>
+            <var>Tags</var>
+            {%for tag in tags%}
+            <a class="btn btn-outline-success btn-sm" href="/user/tag/{{tag.id}}">{{tag.name}}</a>
+            {%endfor%}
+        </div>
+
         <form action="">
-            <button class="btn btn btn-outline-primary" formaction="/user/{{user.id}}">Return</button>
+            <button class="btn btn btn-primary btn-sm" formaction="/user/{{user.id}}">User</button>
             <button class="btn btn-default btn-info btn-sm"
                 formaction="/user/{{user.id}}/post_details/{{post.id}}/edit">Edit</button>
             <button formmethod="POST" class="btn btn-default btn-danger btn-sm"

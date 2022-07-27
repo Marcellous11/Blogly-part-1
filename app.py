@@ -2,9 +2,9 @@
 
 from crypt import methods
 from operator import methodcaller
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, request_started
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Post
+from models import db, connect_db, User, Post , Tag, PostTag
 
 app = Flask(__name__)
 app.config['TESTING'] = True
@@ -30,7 +30,8 @@ def landing():
 def users():
     """Takes you to landing page with list of users"""
     users = User.query.order_by('last_name').all()
-    return render_template('all_users.html',users=users)
+    tags = Tag.query.filter(Tag.id > 0).all()
+    return render_template('all_users.html',users=users,tags=tags)
 
 
 @app.route('/user/add')
@@ -60,7 +61,8 @@ def add_user():
 def show_user(user_id):
     """Show information about user """
     user = User.query.get_or_404(user_id)
-    posts = Post.query.filter(User.id==2)
+    posts = Post.query.filter(User.id > 0)
+    
     return render_template("user_details.html", posts=posts, user=user)
 
 
@@ -100,18 +102,30 @@ def delete_user(user_id):
 def add_post_form(user_id):
     """form to add a new user post"""
     user = User.query.get_or_404(user_id)
-    return render_template('add_post.html',user=user)
+    tags = Tag.query.filter(Tag.id > 0).all()
+    return render_template('add_post.html',user=user,tags=tags)
 
 
 @app.route('/user/<int:user_id>/add_post', methods = ['POST'])
 def add_post(user_id):
-    """Where new user post is submitted"""
+    """Where new user post and asigns tags is submitted"""
     title = request.form['title']
     content = request.form['content']
+    tag_id_list = request.form.getlist('tag')
     user = User.query.get_or_404(user_id)
     post = Post(title=title,content=content,users_id=user_id)
+
     db.session.add(post)
     db.session.commit()
+
+
+    curr_post = len(Post.query.filter(User.id > 0).all() )
+    for tag_id in tag_id_list:
+        posttag = PostTag(post_id=curr_post, tag_id=tag_id)
+        db.session.add(posttag)
+        db.session.commit()
+
+  
     return redirect(f'/user/{user_id}/post_details/{post.id}' )
 
 
@@ -120,28 +134,41 @@ def post_detaisl(user_id,post_id):
     """Information about user post"""
     user = User.query.get_or_404(user_id)
     post = Post.query.get_or_404(post_id)
-    return render_template('post_details.html',user=user,post=post)
+    tags = post.tags
+    
+    return render_template('post_details.html',user=user,post=post,tags=tags)
 
 
 @app.route('/user/<int:user_id>/post_details/<int:post_id>/edit')
 def edit_post(user_id, post_id):
-
+    """Edit a post"""
     user = User.query.get_or_404(user_id)
     post = Post.query.get_or_404(post_id)
-    return render_template('edit_post.html',user=user,post=post)
+    all_tags = Tag.query.filter(Tag.id > 0).all()
+
+
+    checked_tags = post.tags
+    return render_template('edit_post.html',user=user,post=post,all_tags=all_tags,checked_tags=checked_tags)
 
     
 @app.route("/user/<int:user_id>/post_details/<int:post_id>/edit", methods = ["POST"])
 def edit_post_submit(user_id,post_id):
     """Path where user edits are submitted """
+    post = Post.query.get_or_404(post_id)
+    post.tags.clear()
+    db.session.commit()
+
     title = request.form['title']
     content = request.form['content']
+    tag_id_list = request.form.getlist('tag')
     
-    user = User.query.get_or_404(user_id)
-    post = Post.query.get_or_404(post_id)
-
     post.title = title
     post.content = content
+
+    for tag_id in tag_id_list:
+        posttag = PostTag(post_id=post_id, tag_id=tag_id)
+        db.session.add(posttag)
+        db.session.commit()
 
     db.session.commit()
     return redirect(f'/user/{user_id}/post_details/{post_id}')
@@ -150,6 +177,57 @@ def edit_post_submit(user_id,post_id):
 @app.route('/user/<int:user_id>/post_details/<int:post_id>/delete', methods = ['POST'])
 def delete_post(user_id,post_id):
     """Delete a user profile"""
+
     Post.query.filter_by(id=post_id).delete()
     db.session.commit()
     return redirect(f'/user/{user_id}')
+
+
+@app.route('/user/add_tags')
+def tags():
+    """This is the form to create a new tag"""
+
+    tags = Tag.query.filter(Tag.id > 0).all()
+    return render_template('add_tags.html',tags=tags)
+
+@app.route('/user/add_tags', methods=['POST'])
+def create_tags():
+    """Submission to creating a new tag"""
+    name = request.form['name']
+    tag = Tag(name=name) 
+    db.session.add(tag)
+    db.session.commit()
+    return redirect('/user')
+
+
+@app.route('/user/tag/<int:tag_id>')
+def show_post_of_tags(tag_id):
+    """Shows a list of post related to a tag"""
+    tag = Tag.query.get_or_404(tag_id)
+    posts_list = tag.post
+    
+    return render_template('show_related_post.html', tag=tag,posts_list=posts_list)
+
+
+@app.route('/user/tag/<int:tag_id>/edit')
+def edit_tag(tag_id):
+    tag = Tag.query.get_or_404(tag_id)
+    
+    
+    return render_template('edit_tag.html', tag=tag)
+
+@app.route('/user/tag/<int:tag_id>/edit', methods=['POST'])
+def submit_edit_tag(tag_id):
+    tag = Tag.query.get_or_404(tag_id)
+
+    tag_name = request.form['name']
+
+    tag.name = tag_name
+    db.session.commit()
+    return redirect(f'/user/tag/{tag_id}')
+
+@app.route('/user/tag/<int:tag_id>/delete', methods=['POST'])
+def delete_tag(tag_id):
+    Tag.query.filter_by(id=tag_id).delete()
+    db.session.commit()
+    return redirect('/user')

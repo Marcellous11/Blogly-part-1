@@ -1,0 +1,18 @@
+{% extends 'all_users.html' %}
+
+{%block content%}
+
+<div class="container form-group">
+    <h1>Edit Tag</h1>
+    <form action="" method="POST">
+        <label for="title"> Name :
+            <input type="text" name="name" id="" value="{{tag.name}}">
+        </label><br>
+
+        <button class="btn btn-outline-info" formmethod="GET" formaction="/user">Cancel</button>
+        <button class="btn btn-success" formaction="">Make Changes</button>
+    </form>
+</div>
+
+
+{%endblock%}

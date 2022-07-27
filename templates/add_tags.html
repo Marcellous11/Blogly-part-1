@@ -1,0 +1,18 @@
+{% extends 'all_users.html' %}
+
+{%block content%}
+
+<div class="container form-group">
+    <h1>Create Tag</h1>
+    <form action="" method="POST">
+        <label for="title"> Name :
+            <input type="text" name="name" id="">
+        </label><br>
+
+        <button class="btn btn-outline-info" formmethod="GET" formaction="/user">Cancel</button>
+        <button class="btn btn-success" formaction="">Create Tag</button>
+    </form>
+</div>
+
+
+{%endblock%}
